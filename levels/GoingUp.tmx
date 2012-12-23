@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="brick-1" tilewidth="32" tileheight="32">
+  <image source="brick-1.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="components" value="Platform"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="components" value="PlayerStart"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="components" value="Spikes, Deadly"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="components" value="Gem"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="17" name="Spike" tilewidth="32" tileheight="32">
+  <image source="Spike.png" width="64" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="components" value="spike, Deadly"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="21" name="blanks" tilewidth="32" tileheight="32">
+  <image source="blank.png" width="64" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="components" value="Start"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt0kEKACAIBECL/v/mriGZyqZCJIiXZDaqEVEr6uxaXZ6B59pNz/7JjZi70vKis+K+PP/J1d7X8t7SvuRm1nffcUeiu1rR/1myIlyLdcv1WoiLWIiLWBa3C2ej3IqeGCAA2A==
+  </data>
+ </layer>
+</map>

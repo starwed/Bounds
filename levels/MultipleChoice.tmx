@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="brick-1" tilewidth="32" tileheight="32">
+  <image source="brick-1.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="components" value="Platform"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="components" value="PlayerStart"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="components" value="Spikes, Deadly"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="components" value="Gem"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="components" value="Spikes, Deadly"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="components" value="Stone, Pushable, Platform"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="components" value="Gem, PowerUp"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="components" value="Gem, PowerDown"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="components" value="AntiStone, Pushable, Platform"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBwgTG9Aa3s5gZiJRHvRw4NSPrH2MmCRo5RPqr0cA2QvOs0+QPaS6w5q24tO44oXcu1FFyfEp4a91CyTSLGXFQ/GFd74zCUl/8IACwH1rDSyl1L1o/YOHntpUZfTuv4lZO9AYABfAwEW
+  </data>
+ </layer>
+</map>
