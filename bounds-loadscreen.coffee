@@ -47,49 +47,49 @@ spriteInfo = [
 
 map = {}
 Bounds.levels = levels = [
-    {url:"bounds-intro.json", name:"Going Up", par:{m:4, t:20}}
-    {url:"bounds-intro-floorspikes.json", name:"Mind the Gap", par:{m:3, t:5}}
-    {url:"bounds-slightly-tricky-jumps.json", name:"Plateau", par:{m:5, t:15}}
-    {url:"bounds-stairsdown.json", name:"The Descent", par:{m:3, t:9}}
-    {url:"bounds-false-dichotomy.json", name:"The Choice", par:{m:2, t:7}}
-    {url:"bounds-gentle-slope.json", name:"No Hesitation", par:{m:3, t:8}}
-    {url:"bounds-intro-ceiling-spikes.json", name:"Head Room", par:{m:2, t:60}} 
-    {url:"bounds-powerup-intro.json", name:"Watch the Red", par:{m:1, t:5}}
-    {url:"bounds-half-power.json", name:"Half Power", par:{m:1, t:8}}
-    {url:"bounds-power-down-intro.json", name:"Emerald Steps", par:{m:5, t:8}}
+    {url:"GoingUp.json", name:"Going Up", par:{m:4, t:20}}  #GoingUp
+    {url:"FloorspikesIntro.json", name:"Mind the Gap", par:{m:3, t:5}}  #FloorspikesIntro
+    {url:"Plateau.json", name:"Plateau", par:{m:5, t:15}} #Plateau
+    {url:"TheDescent.json", name:"The Descent", par:{m:3, t:9}} #TheDescent
+    {url:"FalseDichotomy.json", name:"The Choice", par:{m:2, t:7}}  #FalseDichotomy
+    {url:"NoHesitation.json", name:"No Hesitation", par:{m:3, t:8}} #NoHesitation
+    {url:"HeadRoom.json", name:"Head Room", par:{m:2, t:60}}  #HeadRoom
+    {url:"RubyIntro.json", name:"Watch the Red", par:{m:1, t:5}} #RubyIntro
+    {url:"HalfPower.json", name:"Half Power", par:{m:1, t:8}} #HalfPower
+    {url:"EmeraldIntro.json", name:"Emerald Steps", par:{m:5, t:8}} #EmeraldIntro
 
-    {url:"skip.json", name:"There And Back Again", par:{m:7, t:60}}
-    {url:"bounds-up-then-down.json", name:"Up and Down", par:{m:5, t:17}}
-    {url:"bounds-mix-up.json", name:"Parity Violation", par:{m:6, t:20}}
+    {url:"ThereAndBack.json", name:"There And Back Again", par:{m:7, t:60}} #ThereAndBack
+    {url:"UpAndDown.json", name:"Up and Down", par:{m:5, t:17}} #UpAndDown
+    {url:"ParityViolation.json", name:"Parity Violation", par:{m:6, t:20}} #ParityViolation
 
-    {url:"bounds-block-intro.json", name:"Just Push It", par:{m:2, t:13}}
-    {url:"golfing-up.json", name:"Hit Jump While Pushing", par:{m:6, t:60}}
-    {url:"target-practice.json", name:"Target Practice", par:{m:0, t:60}}
-    {url:"window.json", name:"Jaws", par:{m:2, t:30}}
-    {url:"breakin.json", name:"Break On Through", par:{m:3, t:15}}
-    {url:"bounds-tricky-block-drop.json", name:"Forcefield", par:{m:1, t:60}}
+    {url:"BlockIntro.json", name:"Just Push It", par:{m:2, t:13}} #BlockIntro
+    {url:"GolfingUphill.json", name:"Hit Jump While Pushing", par:{m:6, t:60}} #GolfingUphill
+    {url:"TargetPractice.json", name:"Target Practice", par:{m:0, t:60}} #TargetPractice
+    {url:"Jaws.json", name:"Jaws", par:{m:2, t:30}}  #Jaws
+    {url:"BreakThrough.json", name:"Break On Through", par:{m:3, t:15}} #BreakThrough
+    {url:"Forcefield.json", name:"Forcefield", par:{m:1, t:60}} #Forcefield
     
 
     
     
-    {url:"bounds-red-diamond-diamond.json", name:"Full Power", par:{m:1, t:8}}
+    {url:"FullPower.json", name:"Full Power", par:{m:1, t:8}} #FullPower
 
 
-    {url:"intro-negativity.json", name:"Introduction to Negativity", par:{m:2, t:60}}
-    {url:"multiple-choice.json", name:"Multiple Choice", par:{m:5, t:30}}  
-    {url:"two-short-walls.json", name:"Two Short Walls", par:{m:3, t:60}} 
+    {url:"NegativeIntro.json", name:"Introduction to Negativity", par:{m:2, t:60}} #NegativeIntro
+    {url:"MultipleChoice.json", name:"Multiple Choice", par:{m:5, t:30}}   #MultipleChoice
+    {url:"TwoShortWalls.json", name:"Two Short Walls", par:{m:3, t:60}} #TwoShortWalls
 
-    {url:"pyramid.json", name:"Pyramid", par:{m:5, t:120}}
-    {url:"thedig.json", name:"The Dig", par:{m:4, t:120}}
+    {url:"Pyramid.json", name:"Pyramid", par:{m:5, t:120}}  #Pyramid
+    {url:"TheDig.json", name:"The Dig", par:{m:4, t:120}} #TheDig
 
-    {url:"men-in-hats.json", name:"The Hat of Death", par:{m:2, t:7}}
-    {url:"crumble-brick-intro.json", name:"Seven Steps Up", par:{m:4, t:12}}
-    {url:"tenuous-bridge.json", name:"Central Limit", par:{m:6, t:90}} 
-    {url:"FourCorners.json", name:"Quartet", par:{m:6, t:20}} 
-    {url:"glass-pyramid.json", name:"Glass Ziggaraut", par:{m:6, t:20}}
-    {url:"escalator.json", name:"Good Intentions", par:{m:6, t:30}}
+    {url:"MenInHats.json", name:"The Hat of Death", par:{m:2, t:7}} #MenInHats
+    {url:"GlassIntro.json", name:"Seven Steps Up", par:{m:4, t:12}} #GlassIntro
+    {url:"CentralLimit.json", name:"Central Limit", par:{m:6, t:90}} #CentralLimit
+    {url:"FourCorners.json", name:"Quartet", par:{m:6, t:20}}  #FourCorners 
+    {url:"GlassZig.json", name:"Glass Ziggaraut", par:{m:6, t:20}} #GlassZig
+    {url:"GoodIntentions.json", name:"Good Intentions", par:{m:6, t:30}} #GoodIntentions
 
-    {url:"sway.json", name:"Drawbridge", par:{m:5, t:60}}       #Needs time?
+    {url:"Drawbridge.json", name:"Drawbridge", par:{m:5, t:60}}       #Drawbridge
     
 
     
@@ -111,7 +111,7 @@ for ll in Bounds.levels
 
 ##---------------------------------------------------##---------------------------------------------------##
 
-spriteList =  [ "sprites/tractor.png", "sprites/negative-transition",  "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png"
+spriteList =  [ "sprites/tractor3.png", "sprites/negative-transition",  "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png"
                  "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock"
                 "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png"
                 "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png"]
@@ -127,7 +127,7 @@ loadScene = ()->
         Crafty.audio.add('death', 'audio/death.wav')
         Crafty.audio.add('music-track-1', 'audio/alien-puzzle.wav')
         #Crafty.audio.add('bounce', 'wall.wav')
-        Crafty.audio.add('shatter', 'audio/breaking-glass-block.wav')
+        Crafty.audio.add('shatter', 'audio/glass-breaking-mike-koenig.wav') # Audio under creative commmons 3 recorded by Mike Koenig
         Crafty.audio.add('jump', 'audio/jump3.wav')
         #Crafty.audio.add('gem', 'gem-pickup.wav')
         Crafty.audio.add('gem', 'audio/gem.wav')
@@ -294,7 +294,7 @@ sliceSprites = ()->
         arrowSprite: [0,0]
     })###
 
-    Crafty.sprite(32, "sprites/tractor2.png", {
+    Crafty.sprite(32, "sprites/tractor3.png", {
         tract1: [0,0],
         tract2: [1,0]
         tract3: [2,0]

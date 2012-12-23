@@ -389,10 +389,16 @@ Crafty.c("Ballistic", {
 
     _enterBallisticFrame: (f)->
         #Allow other code to take control of the ballistic object
+        #if not f.dt<30
+        #    f.dt=30
+        if f.dt>30
+            f.dt=30
+        console.log(f.dt) if Math.random()<.05
+            
         if @controlled is off
-            this._move(f.t)
-            this._accelerate(f.t)
-            this._friction(f.t)
+            this._move(f.dt)
+            this._accelerate(f.dt)
+            this._friction(f.dt)
             if @_tx and Math.abs(@_vx) > @_tx
                    if @_vx > 0 then @_vx = @_tx else @_vx = - @_tx 
 
@@ -423,13 +429,13 @@ Crafty.c("Ballistic", {
         # Reuse moveVec, to avoid creating objects every frame
         
         if @_vx isnt 0
-            @_moveVec.x = this._vx * t/T
+            @_moveVec.x = this._vx * t/T + .5 * this._ax * (t/t)*(t/T)
             @_moveVec.y = 0
             this.trigger('Translate', @_moveVec) 
 
         if @_vy isnt 0
             @_moveVec.x = 0 
-            @_moveVec.y = this._vy * t/T
+            @_moveVec.y = this._vy * t/T+ .5 * this._ay * (t/t)*(t/T)
             this.trigger('Translate', @_moveVec) 
 
 })
