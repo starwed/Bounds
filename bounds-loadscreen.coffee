@@ -85,7 +85,7 @@ Bounds.levels = levels = [
     {url:"MenInHats.json", name:"The Hat of Death", par:{m:2, t:7}} #MenInHats
     {url:"GlassIntro.json", name:"Seven Steps Up", par:{m:4, t:12}} #GlassIntro
     {url:"CentralLimit.json", name:"Central Limit", par:{m:6, t:90}} #CentralLimit
-    {url:"FourCorners.json", name:"Quartet", par:{m:6, t:20}}  #FourCorners 
+    {url:"Quintet.json", name:"Quintet", par:{m:6, t:20}} 
     {url:"GlassZig.json", name:"Glass Ziggaraut", par:{m:6, t:20}} #GlassZig
     {url:"GoodIntentions.json", name:"Good Intentions", par:{m:6, t:30}} #GoodIntentions
 
@@ -112,7 +112,7 @@ for ll in Bounds.levels
 ##---------------------------------------------------##---------------------------------------------------##
 
 spriteList =  [ "sprites/tractor3.png", "sprites/negative-transition",  "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png"
-                 "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock"
+                 "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock.png"
                 "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png"
                 "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png"]
 
@@ -130,7 +130,7 @@ loadScene = ()->
         Crafty.audio.add('shatter', 'audio/glass-breaking-mike-koenig.wav') # Audio under creative commmons 3 recorded by Mike Koenig
         Crafty.audio.add('jump', 'audio/jump3.wav')
         #Crafty.audio.add('gem', 'gem-pickup.wav')
-        Crafty.audio.add('gem', 'audio/gem.wav')
+        Crafty.audio.add('gem', 'audio/gem2.wav')
         Crafty.load( spriteList, ()->Crafty.scene("select") )
         
 
@@ -224,11 +224,12 @@ levelSelect = ()->
         catch e
             console.log(e)
         xpos++
-    completionRate = Math.floor(completionPoints / 64*100)/100 
+    completionRate = Math.floor((completionPoints / 64)*100)
+    console.log("Completion #{completionPoints}")
     #console.log("length is #{Bounds.levels.length}")
-    rateText = Crafty.e("UIText").attr({x:550, y: 50}).text("#{completionRate*100}%")
+    rateText = Crafty.e("UIText").attr({x:550, y: 50}).text("#{completionRate}%")
         .css({"font-size":"200px"})
-        .attr(alpha: completionRate*completionRate+.001)
+        .attr(alpha: completionRate*completionRate/10000+.001)
 
 
     levelText.attr({x:50, y:col+50 }).text("")
