@@ -48,224 +48,224 @@
 
   Bounds.levels = levels = [
     {
-      url: "bounds-intro.json",
+      url: "GoingUp.json",
       name: "Going Up",
       par: {
         m: 4,
         t: 20
       }
     }, {
-      url: "bounds-intro-floorspikes.json",
+      url: "FloorspikesIntro.json",
       name: "Mind the Gap",
       par: {
         m: 3,
         t: 5
       }
     }, {
-      url: "bounds-slightly-tricky-jumps.json",
+      url: "Plateau.json",
       name: "Plateau",
       par: {
         m: 5,
         t: 15
       }
     }, {
-      url: "bounds-stairsdown.json",
+      url: "TheDescent.json",
       name: "The Descent",
       par: {
         m: 3,
         t: 9
       }
     }, {
-      url: "bounds-false-dichotomy.json",
+      url: "FalseDichotomy.json",
       name: "The Choice",
       par: {
         m: 2,
         t: 7
       }
     }, {
-      url: "bounds-gentle-slope.json",
+      url: "NoHesitation.json",
       name: "No Hesitation",
       par: {
         m: 3,
         t: 8
       }
     }, {
-      url: "bounds-intro-ceiling-spikes.json",
+      url: "HeadRoom.json",
       name: "Head Room",
       par: {
         m: 2,
         t: 60
       }
     }, {
-      url: "bounds-powerup-intro.json",
+      url: "RubyIntro.json",
       name: "Watch the Red",
       par: {
         m: 1,
         t: 5
       }
     }, {
-      url: "bounds-half-power.json",
+      url: "HalfPower.json",
       name: "Half Power",
       par: {
         m: 1,
         t: 8
       }
     }, {
-      url: "bounds-power-down-intro.json",
+      url: "EmeraldIntro.json",
       name: "Emerald Steps",
       par: {
         m: 5,
         t: 8
       }
     }, {
-      url: "skip.json",
+      url: "ThereAndBack.json",
       name: "There And Back Again",
       par: {
         m: 7,
         t: 60
       }
     }, {
-      url: "bounds-up-then-down.json",
+      url: "UpAndDown.json",
       name: "Up and Down",
       par: {
         m: 5,
         t: 17
       }
     }, {
-      url: "bounds-mix-up.json",
+      url: "ParityViolation.json",
       name: "Parity Violation",
       par: {
         m: 6,
         t: 20
       }
     }, {
-      url: "bounds-block-intro.json",
+      url: "BlockIntro.json",
       name: "Just Push It",
       par: {
         m: 2,
         t: 13
       }
     }, {
-      url: "golfing-up.json",
+      url: "GolfingUphill.json",
       name: "Hit Jump While Pushing",
       par: {
         m: 6,
         t: 60
       }
     }, {
-      url: "target-practice.json",
+      url: "TargetPractice.json",
       name: "Target Practice",
       par: {
         m: 0,
         t: 60
       }
     }, {
-      url: "window.json",
+      url: "Jaws.json",
       name: "Jaws",
       par: {
         m: 2,
         t: 30
       }
     }, {
-      url: "breakin.json",
+      url: "BreakThrough.json",
       name: "Break On Through",
       par: {
         m: 3,
         t: 15
       }
     }, {
-      url: "bounds-tricky-block-drop.json",
+      url: "Forcefield.json",
       name: "Forcefield",
       par: {
         m: 1,
         t: 60
       }
     }, {
-      url: "bounds-red-diamond-diamond.json",
+      url: "FullPower.json",
       name: "Full Power",
       par: {
         m: 1,
         t: 8
       }
     }, {
-      url: "intro-negativity.json",
+      url: "NegativeIntro.json",
       name: "Introduction to Negativity",
       par: {
         m: 2,
         t: 60
       }
     }, {
-      url: "multiple-choice.json",
+      url: "MultipleChoice.json",
       name: "Multiple Choice",
       par: {
         m: 5,
         t: 30
       }
     }, {
-      url: "two-short-walls.json",
+      url: "TwoShortWalls.json",
       name: "Two Short Walls",
       par: {
         m: 3,
         t: 60
       }
     }, {
-      url: "pyramid.json",
+      url: "Pyramid.json",
       name: "Pyramid",
       par: {
         m: 5,
         t: 120
       }
     }, {
-      url: "thedig.json",
+      url: "TheDig.json",
       name: "The Dig",
       par: {
         m: 4,
         t: 120
       }
     }, {
-      url: "men-in-hats.json",
+      url: "MenInHats.json",
       name: "The Hat of Death",
       par: {
         m: 2,
         t: 7
       }
     }, {
-      url: "crumble-brick-intro.json",
+      url: "GlassIntro.json",
       name: "Seven Steps Up",
       par: {
         m: 4,
         t: 12
       }
     }, {
-      url: "tenuous-bridge.json",
+      url: "CentralLimit.json",
       name: "Central Limit",
       par: {
         m: 6,
         t: 90
       }
     }, {
-      url: "FourCorners.json",
-      name: "Quartet",
+      url: "Quintet.json",
+      name: "Quintet",
       par: {
         m: 6,
         t: 20
       }
     }, {
-      url: "glass-pyramid.json",
+      url: "GlassZig.json",
       name: "Glass Ziggaraut",
       par: {
         m: 6,
         t: 20
       }
     }, {
-      url: "escalator.json",
+      url: "GoodIntentions.json",
       name: "Good Intentions",
       par: {
         m: 6,
         t: 30
       }
     }, {
-      url: "sway.json",
+      url: "Drawbridge.json",
       name: "Drawbridge",
       par: {
         m: 5,
@@ -287,7 +287,7 @@
     ll.url = "levels/" + ll.url;
   }
 
-  spriteList = ["sprites/tractor.png", "sprites/negative-transition", "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png", "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock", "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png", "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png"];
+  spriteList = ["sprites/tractor3.png", "sprites/negative-transition", "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png", "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock.png", "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png", "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png"];
 
   loadScene = function() {
     console.log("Running loadscene");
@@ -295,9 +295,9 @@
     Crafty.audio.add('bounce', 'audio/hit.wav');
     Crafty.audio.add('death', 'audio/death.wav');
     Crafty.audio.add('music-track-1', 'audio/alien-puzzle.wav');
-    Crafty.audio.add('shatter', 'audio/breaking-glass-block.wav');
+    Crafty.audio.add('shatter', 'audio/glass-breaking-mike-koenig.wav');
     Crafty.audio.add('jump', 'audio/jump3.wav');
-    Crafty.audio.add('gem', 'audio/gem.wav');
+    Crafty.audio.add('gem', 'audio/gem2.wav');
     Crafty.load(spriteList, function() {
       return Crafty.scene("select");
     });
@@ -403,14 +403,15 @@
       }
       xpos++;
     }
-    completionRate = Math.floor(completionPoints / 64 * 100) / 100;
+    completionRate = Math.floor((completionPoints / 64) * 100);
+    console.log("Completion " + completionPoints);
     rateText = Crafty.e("UIText").attr({
       x: 550,
       y: 50
-    }).text("" + (completionRate * 100) + "%").css({
+    }).text("" + completionRate + "%").css({
       "font-size": "200px"
     }).attr({
-      alpha: completionRate * completionRate + .001
+      alpha: completionRate * completionRate / 10000 + .001
     });
     levelText.attr({
       x: 50,
@@ -482,7 +483,7 @@
     })
     */
 
-    Crafty.sprite(32, "sprites/tractor2.png", {
+    Crafty.sprite(32, "sprites/tractor3.png", {
       tract1: [0, 0],
       tract2: [1, 0],
       tract3: [2, 0],
