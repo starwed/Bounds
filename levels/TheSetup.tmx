@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="brick-1" tilewidth="32" tileheight="32">
+  <image source="brick-1.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="components" value="Platform"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="components" value="PlayerStart"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="components" value="Spikes, Deadly"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="components" value="Gem"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="components" value="Spikes, Deadly"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="components" value="Stone, Pushable, Platform"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="components" value="Gem, PowerUp"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="components" value="Gem, PowerDown"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="components" value="AntiStone"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="components" value="CrumbleBrick"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzNlosKgDAIRWczevz/B8egIESdmrUuXEblPM4tGJRSYJBnYqsmR+w9/8WNagvOo1w8n6txBGc8Ctwm2nPN3B5pltbrVXTuX7goBSZxtf3NyN+L9/zjXm5mzvXhd1qXVbvBb3Cz1ONa+5bFjfSO0+LkZkirPcKV1iC95zT6PNePPep+03wA+hEC1A==
+  </data>
+ </layer>
+</map>
