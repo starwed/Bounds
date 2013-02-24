@@ -722,7 +722,7 @@ Crafty.c("JumpMan", {
 #Controls for keyboard
 Crafty.c("KeyboardMan", {
     init: ()->
-        this.requires("JumpMan")
+        this.requires("JumpMan, Keyboard")
         this.bind("EnterFrame", @_checkKeys)
         this.bind("KeyDown", this._keydown)
         this.bind("KeyUp", this._keyup)
