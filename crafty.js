@@ -45,7 +45,7 @@
     },
 
     GUID, FPS, frame, components, entities, handlers, onloads, tick, requestID,
-	noSetter, loops, milliSecPerFrame, nextGameTick, slice, rlist, rspace, t_old=0,
+	noSetter, loops, milliSecPerFrame, nextGameTick, slice, rlist, rspace,
 
 	initState = function () {
     	GUID = 1; //GUID for entity IDs
@@ -925,24 +925,16 @@
             * @sign public void Crafty.timer.step()
             * Advances the game by triggering `EnterFrame` and calls `Crafty.DrawManager.draw` to update the stage.
             */
-
             step: function () {
                 loops = 0;
-                var t_now, dt;
                 this.currentTime = +new Date();
                 if (this.currentTime - nextGameTick > 60 * milliSecPerFrame) {
                     nextGameTick = this.currentTime - milliSecPerFrame;
                 }
                 while (this.currentTime > nextGameTick) {
-                    t_now = +new Date();
-                    dt = t_now - t_old;
-                    if (dt>120) { 
-                        dt=120;
-                    }
-                    Crafty.trigger("EnterFrame", { "frame": frame++, "dt": dt});
+                    Crafty.trigger("EnterFrame", { frame: frame++ });
                     nextGameTick += milliSecPerFrame;
                     loops++;
-                    t_old = t_now;
                 }
                 if (loops) {
                     Crafty.DrawManager.draw();
