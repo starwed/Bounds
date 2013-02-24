@@ -81,6 +81,8 @@
     }
   });
 
+  Crafty.c("Pusher", {});
+
   Crafty.c("Feet", {
     init: function() {
       return this.requires("2D, Collision, Movable");
@@ -94,10 +96,9 @@
       console.log("Initing hands");
       this.requires("2D, Collision");
       this.pushMarker = null;
-      return this.attrObj = {};
+      this.attrObj = {};
     },
     _attachment: function(body) {
-      var poly;
       this._body = body;
       this._body.hands = this;
       this.bind("EnterFrame", this._handFrame);
@@ -107,11 +108,16 @@
         w: this._body._w + 2,
         h: this._body._h - 6
       });
-      poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h]);
-      this.collision(poly);
-      return this.trigger("Change");
+      this.collision();
+      this.trigger("Change");
     },
     _endPush: function() {
+      if (!this._body) {
+        return;
+      }
+      if (!this._body.pushed) {
+        return;
+      }
       console.log('ending push');
       console.log(this.__c);
       if (this.pushMarker) {
@@ -120,7 +126,7 @@
       }
       this._body.pushed.controlled = false;
       this._body.unglue(this._body.pushed);
-      return this._body.pushed = null;
+      this._body.pushed = null;
     },
     _startPush: function(target) {
       console.log('starting push');
@@ -137,7 +143,8 @@
         this.pushMarker = null;
       }
       this._body.pushed.controlled = true;
-      return this._body.glue(this._body.pushed);
+      this._body.glue(this._body.pushed);
+      this._body.pushed.bind("Remove", this._endPush);
     },
     _rightway: function(pusher, target) {
       return (target.x < pusher.x && pusher._ax <= 0) || (target.x > pusher.x && pusher._ax >= 0);
@@ -261,15 +268,13 @@
       }
     },
     triggerMove: function() {
-      var e, _i, _len, _ref, _results;
+      var e, _i, _len, _ref;
       this.trigger("Moved");
       _ref = this.glued;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         e = _ref[_i];
-        _results.push(e.triggerMove());
+        e.triggerMove();
       }
-      return _results;
     },
     checkHit: function(move) {
       var e, _i, _len, _ref;
@@ -324,6 +329,9 @@
     },
     unglue: function(e) {
       var i;
+      if (!e) {
+        return;
+      }
       e.move_parent = null;
       i = this.glued.indexOf(e);
       if (i >= 0) {
@@ -388,18 +396,23 @@
         y = false;
       }
       this._tx = x;
-      return this._ty = y;
+      this._ty = y;
+      return this;
     },
     _enterBallisticFrame: function(f) {
+      if (f.dt > 30) {
+        f.dt = 30;
+      }
+      f.dt = 20;
       if (this.controlled === false) {
-        this._move(f.t);
-        this._accelerate(f.t);
-        this._friction(f.t);
+        this._move(f.dt);
+        this._accelerate(f.dt);
+        this._friction(f.dt);
         if (this._tx && Math.abs(this._vx) > this._tx) {
           if (this._vx > 0) {
-            return this._vx = this._tx;
+            this._vx = this._tx;
           } else {
-            return this._vx = -this._tx;
+            this._vx = -this._tx;
           }
         }
       }
@@ -425,19 +438,19 @@
           this._vy = Math.max(0, this._round(this._vy - this._fy * t / T));
         }
         if (this._vy < 0) {
-          return this._vy = Math.min(0, this._round(this._vy + this._fy * t / T));
+          this._vy = Math.min(0, this._round(this._vy + this._fy * t / T));
         }
       }
     },
     _move: function(t) {
       if (this._vx !== 0) {
-        this._moveVec.x = this._vx * t / T;
+        this._moveVec.x = this._vx * t / T + .5 * this._ax * (t / t) * (t / T);
         this._moveVec.y = 0;
         this.trigger('Translate', this._moveVec);
       }
       if (this._vy !== 0) {
         this._moveVec.x = 0;
-        this._moveVec.y = this._vy * t / T;
+        this._moveVec.y = this._vy * t / T + .5 * this._ay * (t / t) * (t / T);
         return this.trigger('Translate', this._moveVec);
       }
     }

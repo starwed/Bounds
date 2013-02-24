@@ -86,6 +86,12 @@ Crafty.c("Pushable", {
 
 })
 
+Crafty.c("Pusher", {
+
+
+
+})
+
 
 
 Crafty.c("Feet", {
@@ -104,6 +110,7 @@ Crafty.c("Hands", {
         this.requires("2D, Collision")
         @pushMarker = null
         @attrObj = {}
+        return
         #this.requires("Canvas, Tint, Color")
         #this.tint("#FF0000", .4)
         
@@ -118,13 +125,18 @@ Crafty.c("Hands", {
             w:  @_body._w + 2 
             h:  @_body._h - 6
         })
-        poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
-        this.collision(poly)
+        #poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
+        this.collision()    #reset polygon size
         this.trigger("Change")
+        return
+
+
         
 
     
     _endPush: ()->
+        return if not @_body
+        return if not @_body.pushed
         console.log('ending push')
         console.log(@__c)
         if @pushMarker
@@ -134,9 +146,12 @@ Crafty.c("Hands", {
         @_body.pushed.controlled = false
         @_body.unglue(@_body.pushed) 
 
+
         #@_body.pushed._vx = @_body._vx
         #@_body.pushed._vy = @_body._vy
         @_body.pushed = null
+        return
+
         
 
     _startPush: (target)->  
@@ -160,13 +175,11 @@ Crafty.c("Hands", {
         @_body.pushed.controlled = true 
         #@_body.pushed.active = true 
         @_body.glue(@_body.pushed)
-
+        @_body.pushed.bind("Remove", @_endPush)
+        return
         #console.log(@pushMarker.__c)
         
     _rightway: (pusher, target)->
-        #(target.x < pusher.x and pusher._vx <= 0 and pusher._ax <=0) or 
-        #    (target.x > pusher.x and pusher._vx >= 0 and pusher._ax>=0)
-
         (target.x < pusher.x  and pusher._ax <=0) or 
             (target.x > pusher.x and pusher._ax>=0)
 
@@ -204,11 +217,6 @@ Crafty.c("Hands", {
                     #console.log(@_body._vx)
                     @_startPush(maybe_pushed)
                     return
-            
-
-
-        
-
 })
 
 
@@ -295,6 +303,7 @@ Crafty.c("Movable", {
         this.trigger("Moved")
         for e in @glued
             e.triggerMove()
+        return
         
     checkHit: (move)->
         return true if this.has("Solid") and this.hit("Solid")
@@ -329,6 +338,7 @@ Crafty.c("Movable", {
             @glued.push(e)
 
     unglue: (e)->
+        return if not e
         e.move_parent = null
         i = @glued.indexOf(e)
         if i >=0
@@ -384,6 +394,7 @@ Crafty.c("Ballistic", {
     terminal: (x=false, y=false)->
         @_tx = x 
         @_ty = y 
+        return this
 
 
 
@@ -393,14 +404,15 @@ Crafty.c("Ballistic", {
         #    f.dt=30
         if f.dt>30
             f.dt=30
-        console.log(f.dt) if Math.random()<.05
-            
+        #console.log(f.dt) if Math.random()<.05
+        f.dt = 20
         if @controlled is off
             this._move(f.dt)
             this._accelerate(f.dt)
             this._friction(f.dt)
             if @_tx and Math.abs(@_vx) > @_tx
                    if @_vx > 0 then @_vx = @_tx else @_vx = - @_tx 
+        return
 
 
     _accelerate: (t)->
@@ -422,6 +434,7 @@ Crafty.c("Ballistic", {
                 @_vy = Math.max(0, @_round( @_vy - @_fy* t/T) )
             if @_vy < 0
                 @_vy = Math.min(0, @_round( @_vy + @_fy* t/T) )
+        return
 
     #In this world, will break if v is large enough, allowing passage through objects
     _move: (t)->
