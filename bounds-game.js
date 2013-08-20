@@ -219,7 +219,7 @@
   };
 
   Bounds.playMap = function(level, glyph) {
-    var boundMeter, boundMeterText, dead, instructionText, instructionToggle, jumpMeterText, min, pl, r2d, reactorUpdate, sec, secD, start, timeText, timeText2, time_ticks, titleText, updateTime, updateTimeText2, updateUI, win_time;
+    var boundMeter, boundMeterText, dead, instructionText, instructionToggle, jumpMeterText, min, pl, r2d, reactorUpdate, sec, secD, start, timeText, titleText, updateTime, updateTimeText2, updateUI, win_time;
     Level.level = level;
     Level.gems = Crafty("Gem").length;
     console.log("Playing map " + glyph);
@@ -310,11 +310,6 @@
       y: 605,
       w: 100
     });
-    timeText2 = Crafty.e("UIText").attr({
-      x: 1100,
-      y: 400,
-      w: 100
-    });
     updateTimeText2 = function() {
       var current_time, time;
       if (Bounds.level_complete) {
@@ -335,24 +330,23 @@
       boundMeter.h = Bounds.player._boundFactor * 32;
       return boundMeter.y = 600 - boundMeter.h;
     };
-    Crafty.bind("UpdateBoundmeter", updateUI);
-    time_ticks = 0;
+    boundMeter.bind("UpdateBoundmeter", updateUI);
+    Bounds.level_time = 0;
     min = 0;
     sec = 0;
     secD = 0;
-    updateTime = function() {
+    updateTime = function(data) {
       var time;
-      time_ticks++;
+      Bounds.level_time += data.dt;
       if (!Bounds.level_complete) {
-        time = time_ticks / 50;
+        time = Bounds.level_time / 1000;
         min = (time / 60) | 0;
         sec = (time - 60 * min) | 0;
         secD = (time - 60 * min - sec) * 10 | 0;
         return timeText.text("Time: " + min + ":" + sec + "." + secD);
       }
     };
-    Crafty.bind("EnterFrame", updateTime);
-    timeText2.bind("EnterFrame", updateTimeText2);
+    timeText.bind("EnterFrame", updateTime);
     titleText = Crafty.e("UIText").attr({
       x: 100,
       y: 10,
@@ -480,7 +474,7 @@
       level = Level.level;
       statusText.text("All gems collected!");
       Bounds.level_complete = true;
-      win_time = Math.floor(((new Date()).getTime() - Level.start_time) / 100) / 10;
+      win_time = Math.floor(Bounds.level_time / 100) / 10;
       win_moves = Bounds.player.jumps;
       try {
         console.log("Checking time as " + win_moves + " in " + win_time + " against " + level.par.m + "/" + level.par.t + " ");
