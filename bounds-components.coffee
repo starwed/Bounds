@@ -1,4 +1,4 @@
-
+console.log("Bounds comp")
 
 # An animated effect that runs once and is destroyed
 Crafty.c("AnimatedEffect", {
@@ -22,13 +22,11 @@ Crafty.c("AnimatedEffect", {
             @destroy()
         if @reelName
             @bind("AnimationEnd", onAnimationEnd)
-            @animate(@reelName, duration)
+            @playAnimation(@reelName, duration)
         if @tweenProp
             @bind("TweenEnd", onAnimationEnd)
             @tween(@tweenProp, duration)
         return this
-
-    
 
 })
 
@@ -39,7 +37,7 @@ Crafty.c("UIText", {
             .attr({w:400})  #Default width
             .css({'font-family': 'Helvetica, Arial'})   #Default font
             .textColor('#FFFFFF', 1)    #Default text color
-
+            .textFont({size:"12pt"})
 
 })
 
@@ -79,7 +77,7 @@ Crafty.c("TractorBeam", {
         this.requires("2D, Canvas, tract1, SpriteAnimation, Movable")
             .attr(alpha:0.8)
             .animate("ripple", [[5,0], [4, 0], [3, 0], [2,0], [1, 0], [0, 0]])
-            .animate("ripple", 20, -1 )
+            .playAnimation("ripple", 20, -1 )
 
 
 
@@ -125,13 +123,15 @@ Crafty.c("CrumbleBrick", {
         for e in crumbleQueue
             e.crumble(false)
 
+        return
+
 
 
 })
 Crafty.c("Stone", {
     init: ()->
         this.requires("Slider, DynamicCollision, Pushable")
-        
+        @sound = 'bounce'
         @setFriction(.2)
 
 })
@@ -139,6 +139,7 @@ Crafty.c("Stone", {
 Crafty.c("AntiStone", {
 
     init: ()->
+        @sound = 'bounce'
         this.requires("Slider, DynamicCollision, Pushable, Platform, SpriteAnimation")
         @setFriction(.2)
         this.bind("Moved", @checkGemHit)
@@ -146,14 +147,15 @@ Crafty.c("AntiStone", {
         @activeNegation = true
         console.log("Adding particles")
         this.addComponent("anti1")
-        this.animate('jarloop', [[0,0], [0,0],  [0,0],  [0,0], [0,0], [0,0],  [0,0],  [1,0], [1,0], [0,0]] )
+        #this.animate('jarloop', [[0,0], [0,0],  [0,0],  [0,0], [0,0], [0,0],  [0,0],  [1,0], [1,0], [0,0]] )
 
+        return
         #@bind("EnterFrame", @addFountain)
         
 
-    pulse: ()->
-        if @isPlaying('jarloop') is false and Math.random()<.05
-            this.animate('jarloop', 50)
+    pulse: ()-> 
+        #if @isPlaying('jarloop') is false and Math.random()<.05
+        #    this.animate('jarloop', 50)
 
     addFountain: ()->
         if this.has("2D") and this.has("Movable") 
@@ -205,13 +207,16 @@ Crafty.c("AntiStone", {
                 gem.destroy()
                 this.destroy()
 
-
         catch e
             console.log(e)
 
 
 })
 
+
+Crafty.c("Gem", { 
+    init:()-> #this.requires("VisibleMBR").debugAlpha(0.5)
+})
 
 Crafty.c("PlayerStart", {
     init: ()-> 
@@ -376,6 +381,7 @@ Crafty.c("Bounder", {
         @points = []
         for n in [0..5]
             @points.push({x:0, y:0})
+        return
 
     calcAngle: (xsign)->
         vy = @getVy() + this._vy
@@ -409,6 +415,7 @@ Crafty.c("Bounder", {
 
         for n in [0..5]
             @markers[n].attr( @ppoints[n])
+        return
 
     killParabola: ()->
         m.destroy() for m in @markers
@@ -527,6 +534,14 @@ Crafty.c("JumpMan", {
         this.requires("Ballistic, DynamicCollision, Bounder, Hoister")
         this.requires("Keyboard")
         
+
+        console.log("initing debug canvas")
+        ###testPoly = new Crafty.polygon([0, 0], [30, 0], [30, 30], [0, 30]); 
+        this.attach(testPoly);
+        this.requires("DebugPolygon")
+            .debugPolygon( testPoly, "white" );###
+        #this.requires("VisibleMBR");#debugAlpha(.8).solidColor("green")
+
         @heart = Crafty.e("2D, Collision, Heart")._attachment(this)
         @gemhitbox = this #
 
@@ -549,6 +564,8 @@ Crafty.c("JumpMan", {
 
         @checker=null
 
+        @sound = 'bounce';
+
 
     flicker: ()->
             if this.alpha < 0.8
@@ -562,7 +579,7 @@ Crafty.c("JumpMan", {
 
 
 
-        # delete sideflam if current animation mode involves it
+        # delete sideflame if current animation mode involves it
         if @sideflame?
             @unglue(@sideflame)
             @sideflame.destroy()
@@ -616,8 +633,8 @@ Crafty.c("JumpMan", {
             @checker = Crafty.e("2D, Collision")
             @checker.h=2
             @checker.w=4
-            poly = new Crafty.polygon([0, 0], [@checker._w, 0], [@checker._w, @checker._h], [0, @checker._h])
-            @checker.collision(poly)
+            #poly = new Crafty.polygon([0, 0], [@checker._w, 0], [@checker._w, @checker._h], [0, @checker._h])
+            #@checker.collision(poly)
 
         @checker.y= this.y+28
         
@@ -669,6 +686,8 @@ Crafty.c("JumpMan", {
             @hoistObject( brick)
         else if this.grounded
             @jump(xsign, this)
+        # trigger the boundmeter to update
+        Crafty.trigger("UpdateBoundmeter")
 
 
 
@@ -691,6 +710,7 @@ Crafty.c("JumpMan", {
                 Crafty.audio.play('death', .6, 1)
                 Bounds.queueSceneChange( (()-> Bounds.player.die()), 1000)
 
+
             if @gemhitbox.hit('Gem') 
                 
                 console.log('gem!')
@@ -702,9 +722,11 @@ Crafty.c("JumpMan", {
                     if gem.has("PowerUp")
                         @trigger("Bounded")
                         @_boundFactor++
+                        Crafty.trigger('UpdateBoundmeter')
                     if gem.has("PowerDown") and @_boundFactor >1
                         @_boundFactor--
                         @trigger("Bounded")
+                        Crafty.trigger('UpdateBoundmeter')
 
                     gem.destroy()
                 catch e
@@ -812,3 +834,11 @@ Crafty.c("KeyboardMan", {
 
 
 
+
+
+Crafty.c("DownIndicator", {
+    init: ()->
+        this.requires("2D, Canvas, down_arrow")
+            .attr({h:32, w:32})
+
+})

@@ -103,4 +103,4 @@ Crafty.c "TiledLevel",
     init: -> 
         @_layerArray = []
         
-        @
+        

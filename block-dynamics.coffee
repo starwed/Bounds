@@ -1,4 +1,5 @@
 
+console.log("Block dyn\n")
 GLOBAL_PUSHED  = null
 GRAVITY =  0.2
 FRICTION = 0.3
@@ -10,12 +11,23 @@ RESTITUTION = 1/8
 
 Crafty.c("DynamicCollision", {
     init: ()-> 
-        this.requires("Solid, Ballistic")
+        this.requires("Solid, Ballistic, BounceMethods")
+        this.bind("Collide", @chooseCollision)
 
+
+    chooseCollision: (collisionInfo)->
+        firstHit = collisionInfo.objs[0].obj
+        if firstHit.has("DynamicCollision")
+            @doCollision(this, firstHit)
+        else 
+            A = @getGlueTop()
+            if A._bounce?
+                A._bounce(collisionInfo.move)
+            
+        return
 
     # A and B are the objects colliding
     doCollision: (A, B) ->
-
         
         # Find a vector for collision axis, from A towards B
         r = 
@@ -28,6 +40,10 @@ Crafty.c("DynamicCollision", {
         rhat = 
             x: r.x/r_mag
             y: r.y/r_mag
+
+        #Move up the chain to controlling objects if necessary
+        A = A.getGlueTop()
+        B = B.getGlueTop()
 
         # If the collision is on the ground, force it to be along the x or y axis.
         # If the collision is in the air, we allow more dynamic collisions (FALSE, but wast true)
@@ -59,6 +75,8 @@ Crafty.c("DynamicCollision", {
         B._vx += dVb * rhat.x
         B._vy += dVb * rhat.y
 
+
+        return
 
 
 
@@ -127,8 +145,8 @@ Crafty.c("Hands", {
         })
         #poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
         this.collision()    #reset polygon size
-        this.trigger("Change")
-        return
+        #this.trigger("Change")
+        return @
 
 
         
@@ -137,8 +155,8 @@ Crafty.c("Hands", {
     _endPush: ()->
         return if not @_body
         return if not @_body.pushed
-        console.log('ending push')
-        console.log(@__c)
+        #console.log('ending push')
+        #console.log(@__c)
         if @pushMarker
             @_body.pushed.unglue(@pushMarker)
             @pushMarker.destroy()
@@ -156,8 +174,8 @@ Crafty.c("Hands", {
 
     _startPush: (target)->  
 
-        console.log('starting push')
-        console.log(@__c)
+        #console.log('starting push')
+        #console.log(@__c)
         @_body.pushed = target 
 
         #Mark that object is being pushed temporarily
@@ -223,26 +241,45 @@ Crafty.c("Hands", {
 
 
 Crafty.c("Solid", {
-
-    
-    restitution: RESTITUTION
-    threshold: 1
-    sound: 'bounce'
-    init: ()-> 
-        this.requires("2D, Collision, Ballistic")
+    init: ()->
+        this.requires("2D, Collision")
+        this.bind("CheckMove", @_checkMove)
+        @collideInfo = {}
+    _checkMove: (move)->
         
-    _checkMove: (from)-> null
+        if hitObjs = this.hit("Solid")
+            #console.log("Cancelling move for #{this[0]}")
+            this.trigger("CancelMove", move)
 
-  
+            @collideInfo.objs = hitObjs
+            @collideInfo.move = move
+            this.trigger("Collide", @collideInfo)
+})
+
+
+Crafty.c("Bounce", {
+    sound: 'bounce'
+    init: ()->
+        this.requires("BounceMethods")
+        this.bind("Collide", @_bounce)
+})
+
+# To be included by anything that needs _bounce
+Crafty.c("BounceMethods", {
+    restitution: RESTITUTION
+    threshold: .1
+
+    init: ()-> 
+    
     _bounce: (move)->
-        return if @controlled is true
+        # Should probably never be called if object is controlled
         if move.x isnt 0
-            if Math.abs(@_vx) < @threshold 
+            if Math.abs(this._vx) < @threshold 
                 @_vx = 0
             else 
                 this.trigger("Bounce", @_vx)
                 Crafty.audio.play(@sound, 1, Math.min(Math.abs(.1*@_vx), .8) ) if @sound
-                @_vx = - Math.round(this._vx) * @restitution
+                @_vx = - Math.round(@_vx) * @restitution
                     
         if move.y isnt 0
             if Math.abs(@_vy) < @threshold
@@ -250,10 +287,14 @@ Crafty.c("Solid", {
             else 
                 this.trigger("Bounce", @_vy)
                 Crafty.audio.play(@sound, 1, Math.min(Math.abs(.1*@_vy), .8)) if @sound
-                @_vy = - Math.round(this._vy) * @restitution
+                @_vy = - Math.round(@_vy) * @restitution
 
-    })
+        return
 
+})
+
+
+MYFLAG = 0
 
 Crafty.c("Movable", {
     glued: []
@@ -264,29 +305,72 @@ Crafty.c("Movable", {
         this.bind("Remove", @onRemoval)
         #this.bind("Teleport", @translate)
         this.bind("Translate", @doMove)
+        this.bind("CancelMove", @cancelMove)
         @glued = []
+        @carried = []
+        @moveOK = true #Should start as true?
 
 
+    #Also remove children?
     onRemoval: ()->
-        if @move_parent?
-            @move_parent.unglue(this)
+        if @glue_parent?
+            @glue_parent.unglue(this)
 
 
 
 
-    translate: (move)->
+    translate: (move, ok)->
+        @moveOK = ok
         this.x += move.x
         this.y += move.y 
         for e in @glued
-            e.translate(move)
+            e.translate(move, ok)
+        for e in @carried
+            e.translate(move, ok)
+
+    
+
+
+    cancelMove: (move)->
+        @moveOK = false
+        if this.glue_parent
+            this.glue_parent.cancelMove(move)
+        else
+            @translate({x:-move.x, y:-move.y}, false)
 
 
     doMove: (move)->
+        move.x = Math.round(move.x)
+        move.y = Math.round(move.y)
+
+        @translate(move, true)
+
+        @checkMoves(move)
+        if @moveOK
+            @triggerMove() 
+        
+
+    checkMoves: (move)->
+        
+
+        return if not @moveOK
+        for e in @carried
+            e.checkMoves(move)
+        for e in @glued
+            e.checkMoves(move)
+        #console.log("CheckingMoves")
+        this.trigger("CheckMove", move)
+
+
+
+
+    doMove2: (move)->
         #Enforce pixel displacements
         move.x = Math.round(move.x)
         move.y = Math.round(move.y)
 
         @translate(move)
+        this.trigger("CheckMove")
         @hit_holder = @findHitObj(move)
         if @hit_holder isnt false
             @translate({x:-move.x, y:-move.y})
@@ -330,7 +414,7 @@ Crafty.c("Movable", {
     glue: (e, x=null, y=null)->
         #Giving x&y is a shorthand for also moving the object to a particular offset relative to the parent
         if e.has("Movable") is false then return false
-        e.move_parent = this
+        e.glue_parent = this
         if x? and y?
             e.x = this.x+x
             e.y = this.y+y
@@ -339,10 +423,16 @@ Crafty.c("Movable", {
 
     unglue: (e)->
         return if not e
-        e.move_parent = null
+        e.glue_parent = null
         i = @glued.indexOf(e)
         if i >=0
             @glued.splice(i, 1)
+
+    getGlueTop: ()->
+        if this.glue_parent?
+            return this.glue_parent.getGlueTop()
+        else
+            return this
 
 
 })
@@ -365,13 +455,15 @@ Crafty.c("Ballistic", {
     controlled: false
     init: ()-> 
         this.requires("2D, Movable")
-        this.bind("EnterFrame", this._enterBallisticFrame)
         this.requires("Mouse")
         this.bind("Click", @debug )
         @_tx = @_ty = false
-        @_moveVec = {x:0, y:0}
-
         
+        @_moveVec = {x:0, y:10}
+        
+        this.bind("EnterFrame", @_enterBallisticFrame)
+        
+       
     debug: ()->
         statusText.text("""
             r:#{@_x},#{@_y};
@@ -399,21 +491,31 @@ Crafty.c("Ballistic", {
 
 
     _enterBallisticFrame: (f)->
+        #console.log("Insert")
         #Allow other code to take control of the ballistic object
-        #if not f.dt<30
-        #    f.dt=30
-        if f.dt>30
-            f.dt=30
+        #f.dt = 20
+        if not f?.dt?
+            f.dt = 20
+
+        if f?.dt?>60
+            f.dt=60
         #console.log(f.dt) if Math.random()<.05
-        f.dt = 20
+        #f.dt = 20
+        #console.log(f.dt);
         if @controlled is off
+            @moveOK = true
             this._move(f.dt)
+            
+            #@moveOk is a property of Moveable; it's set to false if the move was cancelled
+            return if not @moveOK 
+
             this._accelerate(f.dt)
             this._friction(f.dt)
             if @_tx and Math.abs(@_vx) > @_tx
                    if @_vx > 0 then @_vx = @_tx else @_vx = - @_tx 
+        
         return
-
+        
 
     _accelerate: (t)->
         this._vx = @_round(this._ax * t/T + this._vx)
@@ -423,6 +525,9 @@ Crafty.c("Ballistic", {
 
     #Forces like friction can't change the direction of motion
     _friction: (t)->
+        ###if MYFLAG <15
+            console.log("_moveBegin")
+            console.log(@_moveVec)###
         if @_fx isnt 0
             if @_vx > 0
                 @_vx = Math.max(0, @_round( @_vx - @_fx* t/T) )
@@ -438,18 +543,30 @@ Crafty.c("Ballistic", {
 
     #In this world, will break if v is large enough, allowing passage through objects
     _move: (t)->
-
+        ###if MYFLAG++ <15
+            console.log("_moveBegin")
+            console.log(@_moveVec)###
         # Reuse moveVec, to avoid creating objects every frame
         
         if @_vx isnt 0
-            @_moveVec.x = this._vx * t/T + .5 * this._ax * (t/t)*(t/T)
+            @_moveVec.x = this._vx * t/T + .5 * this._ax * (t/T)*(t/T)
             @_moveVec.y = 0
             this.trigger('Translate', @_moveVec) 
 
         if @_vy isnt 0
             @_moveVec.x = 0 
-            @_moveVec.y = this._vy * t/T+ .5 * this._ay * (t/t)*(t/T)
-            this.trigger('Translate', @_moveVec) 
+            @_moveVec.y = this._vy * t/T+ .5 * this._ay * (t/T)*(t/T)
+            ###if MYFLAG++ < 15
+                console.log("checking movevec #{MYFLAG}")
+                tester = this._vy * t/T+ .5 * this._ay * (t/t)*(t/T) 
+                #console.log("test is " + tester)
+                @_moveVec.y = tester
+                
+                console.log(@_moveVec)
+                console.log(@_moveVec.y)###
+            this.trigger('Translate', @_moveVec)
+
+    
 
 })
 
@@ -502,8 +619,9 @@ Crafty.c("Supportable", {
         return this
 
     standingOn: (component)->
-        if @feet.hit(component)
-            return @feet.hit(component)
+        fh = @feet.hit(component)
+        if fh
+            return fh
         else
             return false
 
@@ -515,9 +633,11 @@ Crafty.c("Supportable", {
         @feet.y = @_y + @_h
 
 
-        if @feet.hit('Platform')            
-            @grounded = true
+        if @feet.hit('Platform') 
             @_ay=0
+            if not @grounded            
+                @grounded = true
+                @_teeter()
         else
             @grounded = false
             @_ay= GRAVITY
@@ -530,7 +650,7 @@ Crafty.c("Supportable", {
     _teeter: ()->
         return if (not @slop) or (not @grounded) or (not @checkTeeter) or (@controlled)
         @checkTeeter = false
-        console.log("Checking teetering")
+        #console.log("Checking teetering")
         @_teeterChecker.y = @_y+@_h
         for dx in [1..@slopOffset]
             @_teeterChecker.x = @_x - dx

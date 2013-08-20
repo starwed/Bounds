@@ -2,6 +2,8 @@
 (function() {
   var Bounds, Clamp, Crafty, FLUSH_SAVES, GLOBAL_PUSHED, GRAVITY, INSTRUCTIONS, INSTRUCTIONS2, Level, checkWin, configureTileGraphics, debugText, newPlayer, particleBackground, particleEffect, resetCollisions, resetMap, showDebugText, statusText;
 
+  console.log("Bounds game");
+
   Crafty = window.Crafty;
 
   Clamp = function(x, a, b) {
@@ -27,7 +29,7 @@
   INSTRUCTIONS2 = "<div>\n    <b>Arrows</b> move.<br/>\n    <b>Q</b> & <b>E</b> jump left & right.<br/>\n    <b>?</b> for more info.<br/> \n</div>  ";
 
   window.Bounds = Bounds = {
-    dataVersion: 0.2,
+    dataVersion: 0.211,
     AUTO_ADVANCE: true,
     CURRENT_LEVEL: 1,
     storage: {},
@@ -217,8 +219,9 @@
   };
 
   Bounds.playMap = function(level, glyph) {
-    var boundMeter, boundMeterText, dead, instructionText, instructionToggle, jumpMeterText, pl, r2d, reactorUpdate, start, timeText, titleText, updateUI, win_time;
+    var boundMeter, boundMeterText, dead, instructionText, instructionToggle, jumpMeterText, min, pl, r2d, reactorUpdate, sec, secD, start, timeText, timeText2, time_ticks, titleText, updateTime, updateTimeText2, updateUI, win_time;
     Level.level = level;
+    Level.gems = Crafty("Gem").length;
     console.log("Playing map " + glyph);
     Bounds.level_complete = false;
     Bounds.sceneChangeQueued = false;
@@ -240,6 +243,9 @@
     statusText.text("");
     statusText.css({
       "color": "white"
+    });
+    statusText.textFont({
+      size: "10pt"
     });
     pl = {};
     dead = false;
@@ -271,7 +277,6 @@
       this.parts = particleEffect(this._boundFactor);
       return this.glue(this.parts, 14 - this._boundFactor / 2, 12);
     };
-    Bounds.player.bind("Bounded", reactorUpdate);
     Level.start_time = (new Date).getTime();
     Bounds.player.bind("EnterFrame", checkWin);
     /*thing = Crafty.e("2D, Canvas, Sprite, topBlock1")
@@ -283,13 +288,13 @@
     */
 
     Bounds.player.glue(statusText, 0, -50);
-    boundMeter = Crafty.e("2D, DOM, Color").color("#CC0000").attr({
+    boundMeter = Crafty.e("2D, DOM, Color").color("#BB0000").attr({
       x: 1000,
       y: 600 - 32,
       h: 32,
       w: 32
     }).css({
-      "box-shadow": "0px 0px 5px white inset",
+      "box-shadow": "0px 0px 5px violet inset",
       "border-top-left-radius": "15px",
       "border-bottom-right-radius": "0px"
     }).bind("EnterFrame", function() {
@@ -305,37 +310,57 @@
       y: 605,
       w: 100
     });
-    /*updateTimeText = ()->
-        return if Bounds.level_complete 
-        current_time = (new Date() ).getTime()
-        time = new Date(current_time - start_time)
-        this.text("Time: #{time.getMinutes()}:#{ time.getSeconds()}.#{Math.floor(time.getMilliseconds()/100) }")
-    */
-
+    timeText2 = Crafty.e("UIText").attr({
+      x: 1100,
+      y: 400,
+      w: 100
+    });
+    updateTimeText2 = function() {
+      var current_time, time;
+      if (Bounds.level_complete) {
+        return;
+      }
+      current_time = (new Date()).getTime();
+      time = new Date(current_time - Level.start_time);
+      return this.text("Time: " + (time.getMinutes()) + ":" + (time.getSeconds()) + "." + (Math.floor(time.getMilliseconds() / 100)));
+    };
     timeText = Crafty.e("UIText").attr({
       x: 1100,
       y: 585,
       w: 100
     });
     updateUI = function() {
-      var current_time, time;
       boundMeterText.text(Bounds.player._boundFactor);
       jumpMeterText.text("Moves: " + Bounds.player.jumps);
       boundMeter.h = Bounds.player._boundFactor * 32;
-      boundMeter.y = 600 - boundMeter.h;
+      return boundMeter.y = 600 - boundMeter.h;
+    };
+    Crafty.bind("UpdateBoundmeter", updateUI);
+    time_ticks = 0;
+    min = 0;
+    sec = 0;
+    secD = 0;
+    updateTime = function() {
+      var time;
+      time_ticks++;
       if (!Bounds.level_complete) {
-        current_time = (new Date()).getTime();
-        time = new Date(current_time - Level.start_time);
-        return timeText.text("Time: " + (time.getMinutes()) + ":" + (time.getSeconds()) + "." + (Math.floor(time.getMilliseconds() / 100)));
+        time = time_ticks / 50;
+        min = (time / 60) | 0;
+        sec = (time - 60 * min) | 0;
+        secD = (time - 60 * min - sec) * 10 | 0;
+        return timeText.text("Time: " + min + ":" + sec + "." + secD);
       }
     };
-    Crafty.bind("EnterFrame", updateUI);
+    Crafty.bind("EnterFrame", updateTime);
+    timeText2.bind("EnterFrame", updateTimeText2);
     titleText = Crafty.e("UIText").attr({
       x: 100,
       y: 10,
       w: 400
     }).css({
       "font-size": "30pt"
+    }).textFont({
+      size: "30pt"
     }).text((glyph + 1) + ". " + level.name);
     instructionText = Crafty.e("2D, DOM, HTML, Mouse").attr({
       x: 1000,
@@ -369,7 +394,6 @@
         .textColor('#000000', 1)
     */
 
-    resetCollisions();
     return configureTileGraphics();
   };
 
@@ -415,7 +439,6 @@
         } else if (adjEmptyTiles < 0) {
           ent.addComponent("edgeMetal");
         } else {
-          console.log("Inner block found!");
           ent.removeComponent("Solid").removeComponent("Platform").removeComponent("Collision").addComponent("innerMetal");
         }
       }
@@ -477,7 +500,5 @@
       return Bounds.queueSceneChange(advanceLevel, 1000);
     }
   };
-
-  Crafty.scene("loading");
 
 }).call(this);

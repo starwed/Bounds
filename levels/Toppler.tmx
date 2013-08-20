@@ -44,13 +44,18 @@
   </tile>
   <tile id="8">
    <properties>
-    <property name="components" value="AntiStone, Pushable, Platform"/>
+    <property name="components" value="AntiStone"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="components" value="CrumbleBrick"/>
    </properties>
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBwgTG8wVOylVjjh04/NfHQ2uXYTo5cWaYFYe6kNhkq6GrV3cNjLicV8UuxlImAeNnH0vEZM2YBNL6F8S0k5j688QleHzS5C7sClnhR7WfDIE9KPLjdY7MWnB5+9pMYxKfYyk2AusfYOBAYANikAzg==
+   eJztlUsKwDAIRLU/ev8Tly4KIqNRSQkpFWaRKc4jNDFMRDxI1TqKfT93fq6X2+Ja3xbFRee0B7dyJ97Yb6S+xD2FenGtM5Kdf97/R96uhLyWrByPe9cGvGqhLO8OMFhn35lovseN1uzc7AyP9D7+qiT9yuyQvV7+CF0I2gF/
   </data>
  </layer>
 </map>

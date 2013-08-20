@@ -44,13 +44,13 @@
   </tile>
   <tile id="8">
    <properties>
-    <property name="components" value="AntiStone, Pushable, Platform"/>
+    <property name="components" value="AntiStone"/>
    </properties>
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBwgTG8wVOylVjjh04/NfHQ2uXYTo5cWaYFYe6kNhkq6GrV3cNjLicV8UuxlImAeNnH0vEZM2YBNL6F8S0k5j688QleHzS5C7sClnhR7WfDIE9KPLjdY7MWnB5+9pMYxKfYyk2AusfYOBAYANikAzg==
+   eJzlldEKwCAIRW2Njf7/h/ckjNB1tTsaTAghDp4i0iIiZdEaBcJEua9776yV0VpRr8bu5J5jeA+wHsohXmXqgKtgPdSLcm+/L4v7g9f6d09nYHhn+mSb8FpnQLlMv/L22G/H9mqcTt4C9fv96OzMztvMfRmx2rtiXSGMAOs=
   </data>
  </layer>
 </map>

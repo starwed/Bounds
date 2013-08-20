@@ -1,10 +1,12 @@
+console.log("Bounds load")
+
 Crafty = window.Crafty
 Clamp = (x, a, b)->
     return Math.min(Math.max(x,a),b)
 
 
 # Flag to flush saves easily
-FLUSH_SAVES = false
+FLUSH_SAVES = true
 
 INSTRUCTIONS = """
     <div>
@@ -50,7 +52,7 @@ Bounds.levels = levels = [
     {url:"GoingUp.json", name:"Going Up", par:{m:4, t:20}}  #GoingUp
     {url:"FloorspikesIntro.json", name:"Mind the Gap", par:{m:3, t:5}}  #FloorspikesIntro
     {url:"Plateau.json", name:"Plateau", par:{m:5, t:15}} #Plateau
-    {url:"TheDescent.json", name:"The Descent", par:{m:3, t:9}} #TheDescent
+    {url:"TheDescent2.json", name:"The Descent", par:{m:3, t:9}} #TheDescent
     {url:"FalseDichotomy.json", name:"The Choice", par:{m:2, t:7}}  #FalseDichotomy
     {url:"NoHesitation.json", name:"No Hesitation", par:{m:3, t:8}} #NoHesitation
     {url:"HeadRoom.json", name:"Head Room", par:{m:2, t:60}}  #HeadRoom
@@ -66,7 +68,6 @@ Bounds.levels = levels = [
     {url:"GolfingUphill.json", name:"Hit Jump While Pushing", par:{m:6, t:60}} #GolfingUphill
     {url:"TargetPractice.json", name:"Target Practice", par:{m:0, t:60}} #TargetPractice
     {url:"Jaws.json", name:"Jaws", par:{m:2, t:30}}  #Jaws
-    {url:"BreakThrough.json", name:"Break On Through", par:{m:3, t:15}} #BreakThrough
     {url:"Forcefield.json", name:"Forcefield", par:{m:1, t:60}} #Forcefield
     
 
@@ -81,20 +82,19 @@ Bounds.levels = levels = [
 
     {url:"Pyramid.json", name:"Pyramid", par:{m:5, t:120}}  #Pyramid
     {url:"TheDig.json", name:"The Dig", par:{m:4, t:120}} #TheDig
+    {url:"Drawbridge.json", name:"Drawbridge", par:{m:5, t:60}}       #Drawbridge
 
     {url:"MenInHats.json", name:"The Hat of Death", par:{m:2, t:7}} #MenInHats
-    {url:"GlassIntro.json", name:"Seven Steps Up", par:{m:4, t:12}} #GlassIntro
+    {url:"GlassIntro.json", name:"Seven Steps Up", par:{m:5, t:12}} #GlassIntro
     {url:"CentralLimit.json", name:"Central Limit", par:{m:6, t:90}} #CentralLimit
-    {url:"Quintet.json", name:"Quintet", par:{m:6, t:20}} 
-    {url:"GlassZig.json", name:"Glass Ziggaraut", par:{m:6, t:20}} #GlassZig
+    {url:"LittleBoxes.json", name:"Little Boxes", par:{m:7, t:20}} #GlassZig
+    {url:"Quintet.json", name:"Quintet", par:{m:7, t:20}} 
+    {url:"Pillar.json", name:"Pilla r Assault", par:{m:3, t:30}} #Pillar
     {url:"GoodIntentions.json", name:"Good Intentions", par:{m:6, t:30}} #GoodIntentions
 
-    {url:"Drawbridge.json", name:"Drawbridge", par:{m:5, t:60}}       #Drawbridge
-    
 
     
-    
-    {url:"test.json", name:"Test", par:{m:5, t:1000}}
+    #{url:"test.json", name:"Pillar Assault  ", par:{m:5, t:1000}}
 ]
 
 for ll in Bounds.levels
@@ -114,10 +114,10 @@ for ll in Bounds.levels
 spriteList =  [ "sprites/tractor3.png", "sprites/negative-transition",  "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png"
                  "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock.png"
                 "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png"
-                "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png"]
+                "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png", "sprites/down_arrow.png"]
 
 
-loadScene = ()->
+loadScene = ()->    
         console.log("Running loadscene")
 
         
@@ -194,9 +194,11 @@ levelSelect = ()->
         try
             row = 50 * (xpos % 8) + 50
             col = 50 + 50 * Math.floor(xpos/8)
-            selectorText = Crafty.e("UIText").attr({ x: row + 5, y: col + 3 })
+            selectorText = Crafty.e("UIText").attr({ x: row + 2, y: col + 2 })
                     .text("#{(lIndex+1)}")
                     .textColor('#0000FF', 1)
+                    .textFont({size:"13pt", weight:"normal"})
+
 
             selectorBG = Crafty.e("2D, Color, Canvas, Mouse")
                 .attr({ x: row, y: col, w: 30, h: 30 })
@@ -208,12 +210,14 @@ levelSelect = ()->
             if lev?.passed is true
                 completionPoints++
                 passMarker = Crafty.e("2D, Color, Canvas, Mouse")
-                    .attr({ x: row+25, y: col+25, w: 5, h: 5 })
-                    .color("#666699")
+                    .attr({ x: row+24, y: col+24, w: 4, h: 4})
+                    .color("red")#.color("#666699")
                 if lev.t <= level.par?.t and lev.m <= level.par?.m
                     #selectorBG.color("#3333FF")
+                    selectorText.textFont({weight:"normal"}).textColor('#0000FF', 1)
                     passMarker.color("blue")
-                        .attr({w:5, h:5})
+                        .attr({w:6, h:6})
+                    #selectorText.textColor("lightgrey")
                     #selectorText.textColor("#FFFFFF")
                     completionPoints++
                     #passMarker.color("#000000")
@@ -229,6 +233,7 @@ levelSelect = ()->
     #console.log("length is #{Bounds.levels.length}")
     rateText = Crafty.e("UIText").attr({x:550, y: 50}).text("#{completionRate}%")
         .css({"font-size":"200px"})
+        .textFont({size:"200px"})
         .attr(alpha: completionRate*completionRate/10000+.001)
 
 
@@ -256,6 +261,10 @@ sliceSprites = ()->
         guardx: [2,0]} )###
     Crafty.sprite(32, 32, "sprites/question.png", {
         questionmark: [0,0]
+    })
+
+    Crafty.sprite(64, 64, "sprites/down_arrow.png", {
+        downArrow: [0,0]
     })
 
     Crafty.sprite(960, 640, "sprites/gradient1.png", {
@@ -356,7 +365,16 @@ window.onload = ()->
     WIDTH = 1200
     HEIGHT = 640
     # Initialize Crafty
+    console.log("==== Pre init =====\n")
     Crafty.init(WIDTH, HEIGHT)
+    #Crafty.timer.lockFrames = true;
+    Crafty.timer.steptype("semifixed", 35)
+
+    #Crafty.timer.maxFramesPerStep
+    #Crafty.timer.maxTimestep
+
+    console.log("==== POST init =====\n")
+    Crafty.DrawManager.debugDirty = false
 
     loadFactory = (map,glyph)-> ()-> waitForMap(map,glyph)
 
@@ -386,3 +404,4 @@ window.onload = ()->
     #    ()-> Crafty.scene("loading")
     #)
 
+console.log("All js files loaded")

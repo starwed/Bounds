@@ -42,15 +42,10 @@
     <property name="components" value="Gem, PowerDown"/>
    </properties>
   </tile>
-  <tile id="8">
-   <properties>
-    <property name="components" value="AntiStone, Pushable, Platform"/>
-   </properties>
-  </tile>
  </tileset>
  <layer name="Tile Layer 1" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBwgTG8wVOylVjjh04/NfHQ2uXYTo5cWaYFYe6kNhkq6GrV3cNjLicV8UuxlImAeNnH0vEZM2YBNL6F8S0k5j688QleHzS5C7sClnhR7WfDIE9KPLjdY7MWnB5+9pMYxKfYyk2AusfYOBAYANikAzg==
+   eJzt1rEKACAIBFDLoP//4whqcdAzjIYMxMHDN1ohovKo0KdlvXvSTTfddH90W7DLQHbPOchlICN3Wrblek3U1txTE7E19+Ztl7O6egc7mmVRr/43swYM+QEF
   </data>
  </layer>
 </map>

@@ -1,3 +1,4 @@
+console.log("Bounds game")
 Crafty = window.Crafty
 Clamp = (x, a, b)->
     return Math.min(Math.max(x,a),b)
@@ -37,13 +38,15 @@ INSTRUCTIONS2 = """
 
 
 window.Bounds = Bounds = {
-    dataVersion: 0.2
+    dataVersion: 0.211
     AUTO_ADVANCE: true
     CURRENT_LEVEL: 1
     storage: {}
     dbName: "Bounds0"
     player: {}
     gridVisibility: false
+
+
 
     GRAVITY: GRAVITY
 
@@ -227,6 +230,7 @@ particleBackground = ()->
 
 Bounds.playMap = (level, glyph)->
     Level.level = level
+    Level.gems = Crafty("Gem").length;
     console.log("Playing map #{glyph}")
     Bounds.level_complete = false
     Bounds.sceneChangeQueued = false
@@ -248,6 +252,7 @@ Bounds.playMap = (level, glyph)->
     statusText = Crafty.e("2D, DOM, Text, Movable").attr({ x: 500, y: 100 })
     statusText.text("")
     statusText.css({"color": "white"})
+    statusText.textFont({size: "10pt"})
     
     #console.log("\nMap\n" + map.toSource() )
     
@@ -293,7 +298,7 @@ Bounds.playMap = (level, glyph)->
         @parts=particleEffect(@_boundFactor)
         @glue(@parts, 14-@_boundFactor/2, 12)
 
-    Bounds.player.bind("Bounded",  reactorUpdate)
+    #Bounds.player.bind("Bounded",  reactorUpdate)
         
     
 
@@ -315,9 +320,9 @@ Bounds.playMap = (level, glyph)->
 
 
     boundMeter = Crafty.e("2D, DOM, Color")
-        .color("#CC0000")
+        .color("#BB0000")
         .attr({x: 1000, y:  600 -32, h: 32, w: 32})
-        .css({ "box-shadow":"0px 0px 5px white inset","border-top-left-radius":"15px","border-bottom-right-radius":"0px"})
+        .css({ "box-shadow":"0px 0px 5px violet inset","border-top-left-radius":"15px","border-bottom-right-radius":"0px"})
         .bind("EnterFrame", ()->
             this.h = Bounds.player._boundFactor * 32
             this.y = 600 - this.h
@@ -330,13 +335,15 @@ Bounds.playMap = (level, glyph)->
         .attr({x: 1100, y: 605, w:100})
         #.bind("EnterFrame", ()->this.text("Moves: #{pl.jumps}" ) ) 
 
+    timeText2 = Crafty.e("UIText")
+        .attr({x: 1100, y: 400, w:100})
     
     
-    ###updateTimeText = ()->
+    updateTimeText2 = ()->
         return if Bounds.level_complete 
         current_time = (new Date() ).getTime()
-        time = new Date(current_time - start_time)
-        this.text("Time: #{time.getMinutes()}:#{ time.getSeconds()}.#{Math.floor(time.getMilliseconds()/100) }")###
+        time = new Date(current_time - Level.start_time)
+        this.text("Time: #{time.getMinutes()}:#{ time.getSeconds()}.#{Math.floor(time.getMilliseconds()/100) }")
     
     timeText = Crafty.e("UIText")
         .attr({x: 1100, y: 585, w:100})
@@ -347,19 +354,29 @@ Bounds.playMap = (level, glyph)->
         jumpMeterText.text("Moves: #{Bounds.player.jumps}")
         boundMeter.h = Bounds.player._boundFactor * 32
         boundMeter.y = 600-boundMeter.h
+        
+    Crafty.bind("UpdateBoundmeter", updateUI)
+    time_ticks = 0
+    min = 0
+    sec = 0
+    secD = 0
+    updateTime = ()->
+        time_ticks++
+        if not Bounds.level_complete #and (time_ticks % 2 is 1)
+            time = time_ticks/50 #TODO why does 50 work?
+            min = (time/60)|0
+            sec = (time - 60*min)|0
+            secD = (time - 60*min - sec)*10 |0
+            timeText.text("Time: #{min}:#{sec}.#{secD}")
 
-
-
-        if not Bounds.level_complete 
-            current_time = (new Date() ).getTime()
-            time = new Date(current_time - Level.start_time)
-            timeText.text("Time: #{time.getMinutes()}:#{ time.getSeconds()}.#{Math.floor(time.getMilliseconds()/100) }")
-    Crafty.bind("EnterFrame", updateUI)
+    Crafty.bind("EnterFrame", updateTime)
+    timeText2.bind("EnterFrame", updateTimeText2)
 
 
     titleText = Crafty.e("UIText")
         .attr({x: 100, y: 10, w:400})
         .css({"font-size":"30pt"})
+        .textFont({size:"30pt"})
         .text((glyph + 1) + ". " + level.name)
 
     instructionText = Crafty.e("2D, DOM, HTML, Mouse")
@@ -397,7 +414,7 @@ Bounds.playMap = (level, glyph)->
 
 
 
-    resetCollisions()
+    #resetCollisions()
     configureTileGraphics()
 
 
@@ -426,7 +443,7 @@ configureTileGraphics = ()->
                 else if adjEmptyTiles<0
                     ent.addComponent("edgeMetal")
                 else
-                    console.log("Inner block found!")
+                    #console.log("Inner block found!")
                     ent.removeComponent("Solid").removeComponent("Platform").removeComponent("Collision")
                         .addComponent("innerMetal")
 
@@ -485,7 +502,7 @@ checkWin = ()->
 
                     
 
-    Crafty.scene("loading")
+    #Crafty.scene("loading")
     #Crafty.scene("loading")
     #Crafty.modules( { TiledLevel: 'DEV' }, 
     #    ()-> Crafty.scene("loading")
