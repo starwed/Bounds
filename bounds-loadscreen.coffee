@@ -80,8 +80,8 @@ Bounds.levels = levels = [
     {url:"MultipleChoice.json", name:"Multiple Choice", par:{m:5, t:30}}   #MultipleChoice
     {url:"TwoShortWalls.json", name:"Two Short Walls", par:{m:3, t:60}} #TwoShortWalls
 
-    {url:"Pyramid.json", name:"Pyramid", par:{m:5, t:120}}  #Pyramid
-    {url:"TheDig.json", name:"The Dig", par:{m:4, t:120}} #TheDig
+    {url:"pyramid.json", name:"Pyramid", par:{m:5, t:120}}  #Pyramid
+    {url:"thedig.json", name:"The Dig", par:{m:4, t:120}} #TheDig
     {url:"Drawbridge.json", name:"Drawbridge", par:{m:5, t:60}}       #Drawbridge
 
     {url:"MenInHats.json", name:"The Hat of Death", par:{m:2, t:7}} #MenInHats
@@ -89,7 +89,7 @@ Bounds.levels = levels = [
     {url:"CentralLimit.json", name:"Central Limit", par:{m:6, t:90}} #CentralLimit
     {url:"LittleBoxes.json", name:"Little Boxes", par:{m:7, t:20}} #GlassZig
     {url:"Quintet.json", name:"Quintet", par:{m:7, t:20}} 
-    {url:"Pillar.json", name:"Pilla r Assault", par:{m:3, t:30}} #Pillar
+    {url:"Pillar.json", name:"Pillar Assault", par:{m:3, t:30}} #Pillar
     {url:"GoodIntentions.json", name:"Good Intentions", par:{m:6, t:30}} #GoodIntentions
 
 
@@ -367,6 +367,7 @@ window.onload = ()->
     # Initialize Crafty
     console.log("==== Pre init =====\n")
     Crafty.init(WIDTH, HEIGHT)
+    Crafty.e("Benchmarks, Persist")
     #Crafty.timer.lockFrames = true;
     Crafty.timer.steptype("semifixed", 35)
 

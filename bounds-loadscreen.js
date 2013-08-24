@@ -204,14 +204,14 @@
         t: 60
       }
     }, {
-      url: "Pyramid.json",
+      url: "pyramid.json",
       name: "Pyramid",
       par: {
         m: 5,
         t: 120
       }
     }, {
-      url: "TheDig.json",
+      url: "thedig.json",
       name: "The Dig",
       par: {
         m: 4,
@@ -541,6 +541,7 @@
     HEIGHT = 640;
     console.log("==== Pre init =====\n");
     Crafty.init(WIDTH, HEIGHT);
+    Crafty.e("Benchmarks, Persist");
     Crafty.timer.steptype("semifixed", 35);
     console.log("==== POST init =====\n");
     Crafty.DrawManager.debugDirty = false;

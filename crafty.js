@@ -1,18 +1,10 @@
 /**
  * crafty 0.5.4
- * http://craftyengine.com/
+ * http://craftyjs.com/
  *
  * Copyright 2013, Louis Stowasser
  * Dual licensed under the MIT or GPL licenses.
  */
-
-/*!
-* Crafty v0.5.4
-* http://craftyjs.com
-*
-* Copyright 2010-2013, Louis Stowasser
-* Dual licensed under the MIT or GPL licenses.
-*/
 
 (function (window, initComponents, undefined) {
     /**@
@@ -978,7 +970,6 @@
             // variables used by the game loop to track state
             var endTime = 0, 
                 timeSlip = 0, 
-                loops = 0, 
                 gameTime,
                 frame = 0;
             
@@ -1073,8 +1064,8 @@
                 * Advances the game by triggering `EnterFrame` and `RenderScene`
                 */
                 step: function () {
-                    var drawTimeStart, dt, lastFrameTime;
-                    loops = 0;
+                    var drawTimeStart, dt, lastFrameTime, loops=0;
+                    
                     currentTime = +new Date();
                     if (endTime>0)
                         Crafty.trigger("MeasureWaitTime", currentTime-endTime)
@@ -1122,7 +1113,7 @@
                     }
 
                     //If any frames were processed, render the results
-                    if (loops) {
+                    if (loops > 0) {
                         drawTimeStart = currentTime;
                         Crafty.trigger("RenderScene")
                         // Post-render cleanup opportunity
@@ -11445,6 +11436,55 @@ Crafty.c("Delay", {
 * To visualise an object's MBR, use "VisibleMBR".  To visualise a "Collision" object's hitbox, use "WiredHitBox" or "SolidHitBox".
 * @see DebugPolygon,  DebugRectangle
 */
+
+Crafty.c("Benchmarks", {
+	waitTime:0,
+	renderTime:0,
+	frameTime:0,
+	time:0,
+	ticks: 0,
+	init: function(){
+		this.requires("DebugCanvas")
+		this.bind("MeasureRenderTime", this._countRender)
+		this.bind("MeasureFrameTime", this._countFrame)
+		this.bind("MeasureWaitTime", this._countWait)
+		this.bind("RenderScene", this.logstats)
+	},
+
+	reset: function(){
+		this.waitTime = this.renderTime = this.frameTime = this.time =this.ticks = 0;
+
+	},
+	_countRender: function(t){
+		this.renderTime+=t;
+		this.time+=t;
+	},
+	_countFrame: function(t){
+		this.frameTime+=t;
+		this.time+=t;
+	},
+	_countWait: function(t){
+		this.waitTime+=t;
+		this.time+=t;
+	},
+
+	logstats: function(){
+		this.ticks++;
+		if (this.ticks % 50 == 0)
+			console.log(this.stats())
+	},
+
+	stats: function(){
+		return "Frame: " + Math.round(this.frameTime/this.time*100)/100 + "\n"
+			+ "Render: " + Math.round(Math.round(this.renderTime/this.time*100)/100*100)/100 + "\n"
+			+ "Wait: " + Math.round(this.waitTime/this.time*100)/100 + "\n"
+		this.reset();
+	}
+
+});
+
+
+
 Crafty.c("DebugCanvas", {
 	init: function(){
 		this.requires("2D");
