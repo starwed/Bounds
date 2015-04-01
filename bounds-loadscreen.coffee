@@ -112,8 +112,7 @@ for ll in Bounds.levels
 ##---------------------------------------------------##---------------------------------------------------##
 
 spriteList =  [ "sprites/tractor3.png", "sprites/negative-transition",  "sprites/crumble-brick.png", "sprites/metal-tiles-bluesteel.png"
-                 "sprites/metal-tiles3.png", "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock.png"
-                "sprites/block-test.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png"
+                 "sprites/nebula.jpg", "sprites/gradient1.png", "sprites/antiblock.png", "sprites/grid.png", "sprites/question.png", "sprites/glass-brick2.png"
                 "sprites/alien.png", "sprites/side-flames.png", "sprites/bottom-flames2.png", "sprites/down_arrow.png"]
 
 
@@ -280,10 +279,6 @@ sliceSprites = ()->
         shockwaveLeft: [0,0]
     })###
 
-    Crafty.sprite(32, "sprites/block-test.png", {
-        midBlock1: [0,0]
-        topBlock1: [1,0]
-    })
 
     Crafty.sprite(32, "sprites/metal-tiles-bluesteel.png", {
         edgeMetal: [0,0]
@@ -295,10 +290,7 @@ sliceSprites = ()->
         anti2: [1,0]
     })
 
-    Crafty.sprite(32, "sprites/metal-tiles3.png", {
-        outerEdge: [0,0]
-        outerAlt: [1,0]
-    })
+
 
     ###Crafty.sprite(32, "arrow-up.png", {
         arrowSprite: [0,0]
