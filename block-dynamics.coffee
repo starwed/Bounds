@@ -479,8 +479,8 @@ Crafty.c("Ballistic", {
         return this
 
     accelerate: (ax=0, ay=0)->
-        this._ax=ax
-        this._ay=ay
+        this._ax = ax
+        this._ay = ay
         return this
 
     terminal: (x=false, y=false)->
@@ -498,7 +498,7 @@ Crafty.c("Ballistic", {
             f.dt = 20
 
         if f?.dt?>60
-            f.dt=60
+            f.dt = 60
         #console.log(f.dt) if Math.random()<.05
         #f.dt = 20
         #console.log(f.dt);

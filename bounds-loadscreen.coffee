@@ -131,7 +131,7 @@ loadScene = ()->
         Crafty.audio.add('jump', 'audio/jump3.wav')
         #Crafty.audio.add('gem', 'gem-pickup.wav')
         Crafty.audio.add('gem', 'audio/gem2.wav')
-        Crafty.load( spriteList, ()->Crafty.scene("select") )
+        Crafty.load( {"sprites":spriteList}, ()->Crafty.scene("select") )
         
 
         sliceSprites()
@@ -140,7 +140,7 @@ loadScene = ()->
 waitForMap = (level, glyph)->
     console.log("Waiting for map #{glyph}")
     map?.destroy?()
-    map = Crafty.e("TiledLevel").tiledLevel(level.url)
+    map = Crafty.e("TiledLevel").tiledLevel(level.url, "WebGL")
         .bind("TiledLevelLoaded", ()-> Bounds.playMap(level, glyph) )
     counter = 0
 
@@ -375,7 +375,7 @@ window.onload = ()->
     #Crafty.timer.maxTimestep
 
     console.log("==== POST init =====\n")
-    Crafty.DrawManager.debugDirty = false
+    #Crafty.DrawManager.debugDirty = false
 
     loadFactory = (map,glyph)-> ()-> waitForMap(map,glyph)
 

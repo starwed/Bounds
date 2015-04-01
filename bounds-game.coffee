@@ -180,7 +180,7 @@ Bounds.saveCompletion = ()->
 
 
 newPlayer = (start)->
-    p =Crafty.e("2D, Canvas, alienNorm, Collision, Ballistic, JumpMan, KeyboardMan, Slider, Solid, Platform")
+    p =Crafty.e("2D, WebGL, alienNorm, Collision, Ballistic, JumpMan, KeyboardMan, Slider, Solid, Platform")
             .attr({x: start._x, y: start._y, w: 28, h: 24}) # for Component 2D 
             .launch(0, 0)
             .accelerate(0, GRAVITY)
