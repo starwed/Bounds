@@ -3583,6 +3583,8 @@ Crafty.extend({
      * @see Crafty.e
      */
     c: function (compName, component) {
+        if (typeof components[compName] === undefined)
+            console.log("Overwriting existing component " + compName)
         components[compName] = component;
     },
 

@@ -143,7 +143,6 @@ Crafty.c("Hands", {
             w:  @_body._w + 2 
             h:  @_body._h - 6
         })
-        #poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
         this.collision()    #reset polygon size
         #this.trigger("Change")
         return @
@@ -584,12 +583,13 @@ Crafty.c("Supportable", {
         @widthOffset = 0
         @slopOffset = 0
  
-        poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
-        @feet.collision(poly)
+        #poly = new Crafty.polygon(
+        #     [0, 0, this.w, 0, this.w, this.h, 0, this.h])
+        # @feet.collision(poly)
+        #@feet.addComponent("SolidHitBox")
         @bind("EnterFrame", @_checkSupport) #Check every frame, since support can be removed
         @bind("Moved", @_teeter)
         @_sizeFeet()
-
 
     _sizeFeet: ()->
         #console.log("Resizing feet! #{@widthFraction}, #{this.w}")
@@ -610,7 +610,7 @@ Crafty.c("Supportable", {
     setSlop: (offset=0)->
         return @ if offset is 0 
         @slopOffset = offset
-        @leftfoot = Crafty.e("2D, Collision, Feet")
+        @leftfoot = Crafty.e("2ision, Feet")
             .attr({x: @_x-offset, y: @_y+@_h, w: this.w, h: 1})
         @rightfoot = Crafty.e("2D, Collision, Feet")
             .attr({x: @_x+offset, y: @_y+@_h, w: this.w, h: 1})

@@ -180,7 +180,7 @@ Bounds.saveCompletion = ()->
 
 
 newPlayer = (start)->
-    p =Crafty.e("2D, WebGL, alienNorm, Collision, Ballistic, JumpMan, KeyboardMan, Slider, Solid, Platform")
+    p =Crafty.e("2D, Canvas, alienNorm, Collision, Ballistic, JumpMan, KeyboardMan, Slider, Solid, Platform")
             .attr({x: start._x, y: start._y, w: 28, h: 24}) # for Component 2D 
             .launch(0, 0)
             .accelerate(0, GRAVITY)
@@ -229,6 +229,7 @@ particleBackground = ()->
 
 
 Bounds.playMap = (level, glyph)->
+    console.log("Playing map thingy")
     Level.level = level
     Level.gems = Crafty("Gem").length;
     console.log("Playing map #{glyph}")
@@ -462,7 +463,7 @@ resetCollisions = ()->
         boxes = Crafty("Collision")
         for id in boxes
             ent = Crafty(id)
-            poly = new Crafty.polygon([0, 0], [ent._w, 0], [ent._w, ent._h], [0, ent._h])
+            poly = new Crafty.polygon([0, 0, ent._w, 0, ent._w, ent._h, 0, ent._h])
             ent.collision(poly)
 
 

@@ -255,7 +255,11 @@ Crafty.c("Heart", {
         @x = @_body._x + 6
         @w = @_body._w - 12
         @h = @_body._h - 12
-        poly = new Crafty.polygon([0, 0], [this.w, 0], [this.w, this.h], [0, this.h])
+        poly = new Crafty.polygon([
+            0, 0, 
+            this.w, 0,
+            this.w, this.h,
+            0, this.h])
         this.collision(poly)
     _enterHeartFrame: ()->
         #  margin around the heart
@@ -484,6 +488,7 @@ Crafty.c("Bounder", {
         this.bind("EnterFrame", heightWatcher)
        
     jump: (xsign, bounder=this)->
+        console.log("Trying to jump")
         return if bounder is false 
         Crafty.audio.play('jump', 1, .3* Math.min(Math.sqrt(@_boundFactor), 1))
         @flingSomething(xsign, this)
@@ -807,8 +812,10 @@ Crafty.c("KeyboardMan", {
                 @_ax= -@thrust_x 
                 @trigger("Translate", {x:-1, y:0})
             when 81
+                console.log("Wheee")
                 @trigger_action(-1)
             when 69
+                console.log("wheee")
                 @trigger_action(+1)
             when 39, 'd', 'D'
                 @active = true

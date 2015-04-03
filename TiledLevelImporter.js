@@ -37,7 +37,8 @@
 
   Crafty.c("TiledLevel", {
     makeTiles: function(ts, drawType) {
-      var components, i, posx, posy, sMap, sName, tHeight, tName, tNum, tWidth, tsHeight, tsImage, tsProperties, tsWidth, xCount, yCount, _i, _ref;
+      var components, i, posx, posy, sMap, sName, tHeight, tName, tNum, tWidth, tsHeight, tsImage, tsProperties, tsWidth, xCount, yCount, _i, _ref, _ref1;
+      console.log("Making tiles");
       tsImage = ts.image, tNum = ts.firstgid, tsWidth = ts.imagewidth;
       tsHeight = ts.imageheight, tWidth = ts.tilewidth, tHeight = ts.tileheight;
       tsProperties = ts.tileproperties;
@@ -51,12 +52,8 @@
         tName = "tile" + tNum;
         sMap[sName] = [posx, posy];
         components = "2D, " + drawType + ", " + sName + ", MapTile";
-        if (tsProperties) {
-          if (tsProperties[tNum - 1]) {
-            if (tsProperties[tNum - 1]["components"]) {
-              components += ", " + tsProperties[tNum - 1]["components"];
-            }
-          }
+        if ((tsProperties != null ? (_ref1 = tsProperties[tNum - 1]) != null ? _ref1.components : void 0 : void 0) != null) {
+          components += ", " + tsProperties[tNum - 1]["components"];
         }
         Crafty.c(tName, {
           comp: components,
@@ -100,7 +97,7 @@
         url: levelURL,
         dataType: 'json',
         data: {},
-        async: false,
+        async: true,
         success: (function(_this) {
           return function(level) {
             var lLayers, ts, tsImages, tss;
@@ -129,6 +126,7 @@
                 _this.makeLayer(layer);
               }
               _this.trigger("TiledLevelLoaded");
+              console.log("Finished");
               return null;
             });
             return null;
@@ -147,7 +145,7 @@
         return null;
       }
       tile = layer.tiles[c + r * layer.width];
-      if (tile) {
+      if (tile != null) {
         return tile;
       }
     },

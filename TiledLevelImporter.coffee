@@ -16,7 +16,8 @@ Crafty.c "MapTile",
 
 Crafty.c "TiledLevel",
     makeTiles : (ts, drawType) ->
-        {image: tsImage, firstgid: tNum, imagewidth: tsWidth} =ts
+        console.log("Making tiles")
+        {image: tsImage, firstgid: tNum, imagewidth: tsWidth} = ts
         {imageheight: tsHeight, tilewidth: tWidth, tileheight: tHeight} = ts
         {tileproperties: tsProperties} = ts
         #console.log ts
@@ -32,10 +33,8 @@ Crafty.c "TiledLevel",
             tName = "tile#{tNum}"
             sMap[sName] = [posx, posy]
             components = "2D, #{drawType}, #{sName}, MapTile"
-            if tsProperties
-                if tsProperties[tNum - 1]
-                    if tsProperties[tNum - 1]["components"]
-                        components += ", #{tsProperties[tNum - 1]["components"]}"
+            if tsProperties?[tNum-1]?.components?
+                components += ", #{tsProperties[tNum - 1]["components"]}"
             #console.log components
             Crafty.c tName,
                 comp: components
@@ -74,7 +73,7 @@ Crafty.c "TiledLevel",
             url: levelURL
             dataType: 'json'
             data: {}
-            async: false
+            async: true
             success: (level) =>
                 console.log "loaded #{levelURL}"
                 {layers: lLayers, tilesets: tss} = level
@@ -82,10 +81,11 @@ Crafty.c "TiledLevel",
                 tsImages = for ts in tss
                     ts.image
                 #console.log(tsImages)
-                Crafty.load "sprites":tsImages, =>
+                Crafty.load {"sprites":tsImages}, =>
                     @makeTiles(ts, drawType) for ts in tss
                     @makeLayer(layer) for layer in lLayers
                     @trigger("TiledLevelLoaded")
+                    console.log("Finished")
                     return null
                 return null
         return @
@@ -95,8 +95,8 @@ Crafty.c "TiledLevel",
         return null if not layer? or r<0 or r>=layer.height or c<0 or c>=layer.width
         tile = layer.tiles[c + r*layer.width]
         
-        if tile
-            return tile
+        return tile if tile?
+            
 
 
 

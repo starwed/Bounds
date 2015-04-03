@@ -139,8 +139,12 @@ loadScene = ()->
 waitForMap = (level, glyph)->
     console.log("Waiting for map #{glyph}")
     map?.destroy?()
-    map = Crafty.e("TiledLevel").tiledLevel(level.url, "WebGL")
-        .bind("TiledLevelLoaded", ()-> Bounds.playMap(level, glyph) )
+    map = Crafty.e("TiledLevel").tiledLevel(level.url, "Canvas")
+    console.log("Thingy -------")
+    map.bind("TiledLevelLoaded", ()-> 
+            console.log("hey");
+            Bounds.playMap(level, glyph) 
+        )
     counter = 0
 
 
