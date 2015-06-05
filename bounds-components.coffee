@@ -7,25 +7,27 @@ Crafty.c("AnimatedEffect", {
        
 
 
-    setAnimation: (reelId, frames)->
+    setAnimation: (reelId, duration, frames)->
         @reelName = reelId
-        @animate(reelId, frames)
+        @reel(reelId,  duration, frames)
+        @animationDuration = duration
         return this
         
 
-    setTween: (properties)-> 
+    setTween: (properties, duration)-> 
+        @animationDuration = duration if duration?
         @tweenProp = properties
         return this
 
-    runAnimation: (duration)->
+    runAnimation: ()->
         onAnimationEnd = ()=> 
             @destroy()
         if @reelName
             @bind("AnimationEnd", onAnimationEnd)
-            @playAnimation(@reelName, duration)
+            @animate(@reelName)
         if @tweenProp
             @bind("TweenEnd", onAnimationEnd)
-            @tween(@tweenProp, duration)
+            @tween(@tweenProp, @animationDuration)
         return this
 
 })
@@ -76,8 +78,8 @@ Crafty.c("TractorBeam", {
     init: ()->
         this.requires("2D, Canvas, tract1, SpriteAnimation, Movable")
             .attr(alpha:0.8)
-            .animate("ripple", [[5,0], [4, 0], [3, 0], [2,0], [1, 0], [0, 0]])
-            .playAnimation("ripple", 20, -1 )
+            .reel("ripple", 400, [[5,0], [4, 0], [3, 0], [2,0], [1, 0], [0, 0]])
+            .animate("ripple", -1 )
 
 
 
@@ -116,9 +118,9 @@ Crafty.c("CrumbleBrick", {
 
         eff = Crafty.e("AnimatedEffect, crBrick1")
             .attr({x: this.x, y:this.y, alpha:.8})
-            .setAnimation("shatter", [[0,0], [1,0], [2,0], [2,0]])
+            .setAnimation("shatter", 400,  [[0,0], [1,0], [2,0], [2,0]])
             .setTween({alpha:.3, y:this.y+20})
-            .runAnimation(20)
+            .runAnimation()
         this.destroy()
         for e in crumbleQueue
             e.crumble(false)
@@ -201,9 +203,9 @@ Crafty.c("AntiStone", {
                 #console.log("Gem source: " + gem.toSource())
                 eff = Crafty.e("AnimatedEffect, negt1")
                     .attr({x: gem.x, y:gem.y})
-                    .setAnimation("fade", [[0,0], [1,0], [2,0]])
+                    .setAnimation("fade", 400, [[0,0], [1,0], [2,0]])
                     .setTween({alpha:0})
-                    .runAnimation(20)
+                    .runAnimation()
                 gem.destroy()
                 this.destroy()
 
@@ -512,8 +514,8 @@ Crafty.c("Bounder", {
 
         
         this.glue(jet)
-        jet.setTween({alpha:.4})
-            .runAnimation(20)
+        jet.setTween({alpha:.4}, 400)
+            .runAnimation()
         @trigger("Bounded")
 
 
